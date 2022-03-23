@@ -2,26 +2,23 @@ import { useMemo, useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { createEditor, Descendant } from "slate";
-import { Editable, ReactEditor, Slate, withReact } from "slate-react";
-import { withHistory } from "slate-history";
 import { css } from "@emotion/react";
+import { Box, MantineProvider } from "@mantine/core";
+
+import RichTextEditor from "./components/RichText";
 
 const Home: NextPage = () => {
-  const editor = useMemo(
-    () => withHistory(withReact(createEditor() as ReactEditor)),
+  const [value, setValue] = useState("Hello world");
+  const modules = useMemo(
+    () => ({
+      history: { delay: 2500, userOnly: true },
+      // syntax: true,
+    }),
     []
   );
-  const [value, setValue] = useState<Descendant[]>([
-    { children: [{ text: "" }] },
-  ]);
 
   return (
-    <div
-      css={css`
-        padding: 0 2rem;
-      `}
-    >
+    <div>
       <Head>
         <title>Create Next App</title>
         <meta
@@ -32,59 +29,66 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main
-        css={css`
-          height: 100vh;
-          padding: 50px;
-        `}
-      >
-        <Slate
-          editor={editor}
-          value={value}
-          onChange={(newValue) => setValue(newValue)}
-        >
-          <Editable
-            placeholder="Write something..."
-            css={css`
-              width: 100%;
-              height: 100%;
-            `}
-          />
-        </Slate>
-      </main>
-
-      <footer
-        css={css`
-          display: flex;
-          flex: 1;
-          padding: 2rem 0;
-          border-top: 1px solid #eaeaea;
-          justify-content: center;
-          align-items: center;
-        `}
-      >
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      <MantineProvider theme={{ colorScheme: "dark" }}>
+        <main>
+          <Box
+            sx={(theme) => ({
+              height: "100vh",
+              padding: "50px",
+              backgroundColor:
+                theme.colorScheme === "dark"
+                  ? theme.colors.dark[5]
+                  : theme.colors.gray[0],
+            })}
+          >
+            <RichTextEditor
+              sx={() => ({
+                height: "100%",
+              })}
+              value={value}
+              onChange={setValue}
+              modules={modules}
+            />
+          </Box>
+        </main>
+        <footer
           css={css`
             display: flex;
+            flex: 1;
+            padding: 2rem 0;
+            border-top: 1px solid #eaeaea;
             justify-content: center;
             align-items: center;
-            flex-grow: 1;
           `}
         >
-          Powered by{" "}
-          <span
+          <a
+            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+            target="_blank"
+            rel="noopener noreferrer"
             css={css`
-              height: 1em;
-              margin-left: 0.5rem;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              flex-grow: 1;
             `}
           >
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
+            Powered by{" "}
+            <span
+              css={css`
+                height: 1em;
+                margin-left: 0.5rem;
+              `}
+            >
+              <Image
+                src="/vercel.svg"
+                alt="Vercel Logo"
+                width={72}
+                height={16}
+              />
+            </span>
+          </a>
+        </footer>
+      </MantineProvider>
     </div>
   );
 };
