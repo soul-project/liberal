@@ -7,21 +7,21 @@ import { Editable, ReactEditor, Slate, withReact } from "slate-react";
 import { withHistory } from "slate-history";
 import { css } from "@emotion/react";
 
-import styles from "../styles/Home.module.css";
-
 const Home: NextPage = () => {
   const editor = useMemo(
     () => withHistory(withReact(createEditor() as ReactEditor)),
     []
   );
   const [value, setValue] = useState<Descendant[]>([
-    {
-      children: [{ text: "" }],
-    },
+    { children: [{ text: "" }] },
   ]);
 
   return (
-    <div className={styles.container}>
+    <div
+      css={css`
+        padding: 0 2rem;
+      `}
+    >
       <Head>
         <title>Create Next App</title>
         <meta
@@ -53,14 +53,34 @@ const Home: NextPage = () => {
         </Slate>
       </main>
 
-      <footer className={styles.footer}>
+      <footer
+        css={css`
+          display: flex;
+          flex: 1;
+          padding: 2rem 0;
+          border-top: 1px solid #eaeaea;
+          justify-content: center;
+          align-items: center;
+        `}
+      >
         <a
           href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
           target="_blank"
           rel="noopener noreferrer"
+          css={css`
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+          `}
         >
           Powered by{" "}
-          <span className={styles.logo}>
+          <span
+            css={css`
+              height: 1em;
+              margin-left: 0.5rem;
+            `}
+          >
             <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
           </span>
         </a>
