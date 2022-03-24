@@ -2,8 +2,7 @@ import { useMemo, useState } from "react";
 import Editor, { Quill } from "@mantine/rte";
 import MarkdownShortcuts from "quill-markdown-shortcuts";
 
-export default function RichTextEditor() {
-  const [value, setValue] = useState("Start typing something...");
+export default function RichTextEditor({ onChange, value }: Props) {
   const modules = useMemo(
     () => ({
       history: { delay: 2500, userOnly: true },
@@ -21,7 +20,7 @@ export default function RichTextEditor() {
       })}
       value={value}
       placeholder="Start typing something..."
-      onChange={setValue}
+      onChange={onChange}
       modules={modules}
       controls={[
         ["bold", "italic", "underline", "link", "image"],
@@ -32,3 +31,8 @@ export default function RichTextEditor() {
     />
   );
 }
+
+type Props = {
+  value: string;
+  onChange: (value: string) => void;
+};

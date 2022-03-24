@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import { Box, Text } from "@mantine/core";
 
 const Home: NextPage = () => {
-  const RichTextEditor = dynamic(() => import("../components/RichTextEditor"), {
+  const Editor = dynamic(() => import("../components/Editor"), {
     ssr: false,
     loading: () => null,
   });
@@ -33,7 +33,7 @@ const Home: NextPage = () => {
                 : theme.colors.gray[0],
           })}
         >
-          <RichTextEditor />
+          <Editor />
         </Box>
       </main>
       <Box
@@ -41,7 +41,6 @@ const Home: NextPage = () => {
           display: "flex",
           flex: 1,
           padding: "2rem 0",
-          borderTop: "1px solid black",
           justifyContent: "center",
           alignItems: "center",
           backgroundColor:
