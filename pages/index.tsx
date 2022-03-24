@@ -1,20 +1,22 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { Box, Text } from "@mantine/core";
+import { Editor } from "@tinymce/tinymce-react";
 
-import RichTextEditor from "../components/RichText";
+// import RichTextEditor from "../components/RichText";
 
 const Home: NextPage = () => {
-  const [value, setValue] = useState("Hello world");
-  const modules = useMemo(
-    () => ({
-      history: { delay: 2500, userOnly: true },
-      // syntax: true,
-    }),
-    []
-  );
+  // const [value, setValue] = useState("Hello world");
+  // const modules = useMemo(
+  //   () => ({
+  //     history: { delay: 2500, userOnly: true },
+  //     // syntax: true,
+  //   }),
+  //   []
+  // );
+  const editorRef = useRef<any>(null);
 
   return (
     <div>
@@ -39,13 +41,33 @@ const Home: NextPage = () => {
                 : theme.colors.gray[0],
           })}
         >
-          <RichTextEditor
+          {/* <RichTextEditor
             sx={() => ({
               height: "100%",
             })}
             value={value}
             onChange={setValue}
             modules={modules}
+          /> */}
+          <Editor
+            onInit={(evt, editor) => (editorRef.current = editor)}
+            initialValue="<p>This is the initial content of the editor.</p>"
+            init={{
+              height: 500,
+              menubar: false,
+              plugins: [
+                "advlist autolink lists link image charmap print preview anchor",
+                "searchreplace visualblocks code fullscreen",
+                "insertdatetime media table paste code help wordcount",
+              ],
+              toolbar:
+                "undo redo | formatselect | " +
+                "bold italic backcolor | alignleft aligncenter " +
+                "alignright alignjustify | bullist numlist outdent indent | " +
+                "removeformat | help",
+              content_style:
+                "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+            }}
           />
         </Box>
       </main>
