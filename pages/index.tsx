@@ -4,7 +4,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { Box, Text } from "@mantine/core";
 
-import RichTextEditor from "./components/RichText";
+import RichTextEditor from "../components/RichText";
 
 const Home: NextPage = () => {
   const [value, setValue] = useState("Hello world");
