@@ -1,14 +1,13 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import dynamic from "next/dynamic";
 import { Box, Text } from "@mantine/core";
 
+import useEditor from "../hooks/useEditor";
+import NavigationBar from "../components/NavigationBar";
+
 const Home: NextPage = () => {
-  const Editor = dynamic(() => import("../components/Editor"), {
-    ssr: false,
-    loading: () => null,
-  });
+  const { editor, publish } = useEditor();
 
   return (
     <div>
@@ -26,14 +25,14 @@ const Home: NextPage = () => {
         <Box
           sx={(theme) => ({
             height: "100vh",
-            padding: "50px",
             backgroundColor:
               theme.colorScheme === "dark"
                 ? theme.colors.dark[5]
                 : theme.colors.gray[0],
           })}
         >
-          <Editor />
+          <NavigationBar onPublish={publish!} disablePublish={!publish} />
+          <Box sx={() => ({ padding: "50px", height: "100%" })}>{editor}</Box>
         </Box>
       </main>
       <Box
