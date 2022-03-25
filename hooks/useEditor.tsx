@@ -12,12 +12,14 @@ const RichTextEditor: ComponentType<Props> = dynamic(
 );
 
 export default function useEditor() {
-  const [value, setValue] = useState("Start typing something...");
+  const [value, setValue] = useState("<p>Start typing something...</p>");
 
   return {
     Editor: RichTextEditor,
     publish: () => console.log(value),
     value,
     setValue,
+    canPublish:
+      value !== "<p>Start typing something...</p>" && value !== "<p><br></p>",
   };
 }

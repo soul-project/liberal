@@ -25,7 +25,6 @@ export default function RichTextEditor({ onChange, value }: Props) {
       controls={[
         ["bold", "italic", "underline", "link", "image"],
         ["unorderedList", "h1", "h2", "h3"],
-        ["sup", "sub"],
         ["code", "codeBlock"],
       ]}
     />
