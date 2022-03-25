@@ -1,9 +1,9 @@
 import { Box, Button } from "@mantine/core";
 
-export default function NavigationBar({ onPublish, disablePublish }: Props) {
+export default function NavigationBar({ onPublish }: Props) {
   return (
     <Box sx={() => ({ backgroundColor: "white", padding: "20px" })}>
-      <Button onClick={onPublish} color="teal" disabled={disablePublish}>
+      <Button onClick={onPublish} color="teal">
         Publish
       </Button>
     </Box>
@@ -12,5 +12,4 @@ export default function NavigationBar({ onPublish, disablePublish }: Props) {
 
 type Props = {
   onPublish: () => void;
-  disablePublish: boolean;
 };

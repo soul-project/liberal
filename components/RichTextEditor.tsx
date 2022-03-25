@@ -32,7 +32,7 @@ export default function RichTextEditor({ onChange, value }: Props) {
   );
 }
 
-type Props = {
+export type Props = {
   value: string;
   onChange: (value: string) => void;
 };
