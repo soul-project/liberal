@@ -33,7 +33,6 @@ export default function useEditor({ onSuccess }: { onSuccess: () => void }) {
       onSuccess,
     }
   );
-  console.log(data, error);
 
   return {
     Editor: RichTextEditor,
@@ -46,8 +45,9 @@ export default function useEditor({ onSuccess }: { onSuccess: () => void }) {
       contentValue !== "<p><br></p>" &&
       titleValue !== "", // TODO: add better validation for this
     isPublishing: isLoading,
-    data,
     titleValue,
     setTitleValue,
+    data,
+    error,
   };
 }

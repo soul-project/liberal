@@ -6,6 +6,7 @@ const TitleInput = forwardRef<HTMLInputElement, Props>(
     return (
       <Input
         placeholder="Title..."
+        variant="filled"
         size="lg"
         sx={() => ({ width: "100%", marginBottom: "10px" })}
         value={value}
