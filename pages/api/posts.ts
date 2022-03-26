@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 import FormData from "form-data";
+import { v4 as uuidv4 } from "uuid";
 
 type Data = {
   cid: string;
@@ -12,13 +13,16 @@ export default async function handler(
 ) {
   if (req.method === "POST") {
     try {
-      const formData = new FormData();
-      formData.append("file", req.body.content);
-      console.log(formData);
+      const folderUUID = uuidv4();
 
-      const { Hash } = (
-        await axios.post<{ Hash: string }>(
-          "http://127.0.0.1:5001/api/v0/add",
+      const formData = new FormData();
+      formData.append("file", req.body.content, {
+        filename: encodeURIComponent(`${folderUUID}/index.html`),
+      });
+
+      const response = (
+        await axios.post<string>(
+          "http://127.0.0.1:5001/api/v0/add", // TODO: Create an env file for this to store the hostname
           formData,
           {
             headers: { ...formData.getHeaders() },
@@ -26,7 +30,14 @@ export default async function handler(
           }
         )
       ).data;
-      res.status(201).json({ cid: Hash });
+      const cids = response
+        .replace(/\n$/, "") // Remove trailing newline
+        .split("\n") // Split into lines
+        .map<{ Hash: string }>((data) => JSON.parse(data)); // Parse each line
+
+      const folderCid = cids[cids.length - 1].Hash;
+
+      res.status(201).json({ cid: folderCid });
     } catch (err) {
       res.status(500).end();
     }

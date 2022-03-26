@@ -10,6 +10,8 @@ const Home: NextPage = () => {
   const { Editor, publish, value, setValue, canPublish, isPublishing } =
     useEditor();
 
+  // TODO: Move this to new-page url, and also have it such then after submission it redirects you
+  // to the url that you just published to.
   return (
     <div>
       <Head>
