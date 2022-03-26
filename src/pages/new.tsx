@@ -66,13 +66,26 @@ const New: NextPage = () => {
               </Button>
             }
           />
-          <Box sx={() => ({ padding: "10px 50px 50px 50px" })}>
-            <Title
-              value={titleValue}
-              onChange={setTitleValue}
-              ref={titleInputRef}
-            />
-            <Editor value={contentValue} onChange={setContentValue} />
+          <Box
+            sx={() => ({
+              padding: "10px 30px 30px 30px",
+            })}
+          >
+            <Box
+              sx={() => ({
+                maxWidth: "800px",
+                display: "block",
+                marginLeft: "auto",
+                marginRight: "auto",
+              })}
+            >
+              <Title
+                value={titleValue}
+                onChange={setTitleValue}
+                ref={titleInputRef}
+              />
+              <Editor value={contentValue} onChange={setContentValue} />
+            </Box>
           </Box>
         </Page>
       </main>
