@@ -1,5 +1,5 @@
 # Things to do
 
-1. Implement publishing api to publish to IPFS
-2. Add syntax highlighting to RichTextEditor
-3. Add linting for this
+1. Package the value from editor into an index.html file
+3. Add syntax highlighting to RichTextEditor
+4. Add linting for this
