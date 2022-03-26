@@ -1,7 +1,8 @@
-import { Box, UnstyledButton, Button } from "@mantine/core";
-import useLogin from "../hooks/useLogin";
+import { Box, Button } from "@mantine/core";
 
-import Avatar from "./NavigationBar/Avatar";
+import AvatarButton from "./NavigationBar/AvatarButton";
+
+import useLogin from "../hooks/useLogin";
 
 export default function NavigationBar({ primaryButton }: Props) {
   const { username, login, logout, loggingIn } = useLogin();
@@ -33,9 +34,7 @@ export default function NavigationBar({ primaryButton }: Props) {
       >
         {primaryButton}
         {username ? (
-          <UnstyledButton onClick={logout}>
-            <Avatar size={30} name={username} />
-          </UnstyledButton>
+          <AvatarButton onClick={logout} username={username} />
         ) : (
           <Button
             onClick={login}

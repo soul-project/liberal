@@ -3,6 +3,7 @@
 - Consider using firebase to store some of the user information for this platform
   - Use firebase to store cids attached to users
 - Adjust the font size accordingly and change the font style
+  - Make scroll follow the cursor
 - Add IPFS docker to soul-network https://dokku.com/docs~v0.23.9/deployment/methods/images/#deploying-from-a-docker-registry
 - Add import plugin for eslint
 - Add an option for folks to pin the article forever

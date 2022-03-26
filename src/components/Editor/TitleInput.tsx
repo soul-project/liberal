@@ -7,8 +7,9 @@ const TitleInput = forwardRef<HTMLInputElement, Props>(
       <Input
         placeholder="Title..."
         variant="filled"
-        size="lg"
-        sx={() => ({ width: "100%", marginBottom: "10px" })}
+        size="xl"
+        // TODO: Make this text bold
+        sx={() => ({ width: "100%", marginBottom: "10px", fontWeight: "bold" })}
         value={value}
         onChange={(evt: BaseSyntheticEvent) => onChange(evt.target.value)}
         ref={ref}
