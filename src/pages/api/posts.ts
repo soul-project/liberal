@@ -9,6 +9,28 @@ type Data = {
   cid: string;
 };
 
+async function addToIPFS(formData: FormData) {
+  const response = (
+    await axios.post<string>(
+      `http://${process.env.IPFS_HOSTNAME}:${process.env.IPFS_PORT}/api/v0/add`,
+      formData,
+      {
+        headers: { ...formData.getHeaders() },
+        params: { pin: true },
+      }
+    )
+  ).data;
+
+  const cids = response
+    .replace(/\n$/, "") // Remove trailing newline
+    .split("\n") // Split into lines
+    .map<{ Hash: string }>((data) => JSON.parse(data)); // Parse each line
+
+  return cids;
+}
+
+async function addToFirestore() {}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
@@ -30,21 +52,7 @@ export default async function handler(
         }
       );
 
-      const response = (
-        await axios.post<string>(
-          `http://${process.env.IPFS_HOSTNAME}:${process.env.IPFS_PORT}/api/v0/add`,
-          formData,
-          {
-            headers: { ...formData.getHeaders() },
-            params: { pin: true },
-          }
-        )
-      ).data;
-      const cids = response
-        .replace(/\n$/, "") // Remove trailing newline
-        .split("\n") // Split into lines
-        .map<{ Hash: string }>((data) => JSON.parse(data)); // Parse each line
-
+      const cids = await addToIPFS(formData);
       const folderCid = cids[cids.length - 1].Hash;
 
       res.status(201).json({ cid: folderCid });
