@@ -22,7 +22,7 @@ export default async function handler(
 
       const response = (
         await axios.post<string>(
-          "http://127.0.0.1:5001/api/v0/add", // TODO: Create an env file for this to store the hostname
+          `http://${process.env.IPFS_HOSTNAME}:${process.env.IPFS_PORT}/api/v0/add`,
           formData,
           {
             headers: { ...formData.getHeaders() },

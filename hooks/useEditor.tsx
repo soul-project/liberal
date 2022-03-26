@@ -21,7 +21,7 @@ export default function useEditor() {
       return data;
     },
     {
-      mutationKey: "/api/posts",
+      mutationKey: ["/api/posts", value],
     }
   );
   console.log(data, error);
