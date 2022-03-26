@@ -7,7 +7,10 @@ const CALLBACK = "http://localhost:3000";
 
 export default function useLogin() {
   const [cookies, setCookie, removeCookies] = useCookies(["soul-token"]);
-  const [username, setUsername] = useState<string | undefined>();
+  const [userCredentials, setUserCredentials] = useState<{
+    username: string;
+    userId: number;
+  }>();
   const [loggingIn, setIsLoggingIn] = useState(false);
 
   useEffect(() => {
@@ -35,14 +38,14 @@ export default function useLogin() {
       setIsLoggingIn(true);
       try {
         const {
-          data: { username },
+          data: { username, id },
         } = await axios.get("https://api.soul-network.com/v1/users/me", {
           headers: {
             "Content-type": "application/json",
             Authorization: `Bearer ${cookies["soul-token"]}`,
           },
         });
-        setUsername(username);
+        setUserCredentials({ username, userId: id });
       } catch (_error) {
         removeCookies("soul-token");
       }
@@ -51,7 +54,7 @@ export default function useLogin() {
     if (cookies["soul-token"]) {
       loginAndSetUsername();
     } else {
-      setUsername(undefined);
+      setUserCredentials(undefined);
     }
   }, [cookies, removeCookies, setIsLoggingIn]);
 
@@ -68,7 +71,7 @@ export default function useLogin() {
 
   // TODO: Consider trying for refresh token when we can't login
 
-  return { username, login, logout, loggingIn };
+  return { login, logout, loggingIn, ...userCredentials };
 }
 
 const getSearchParams = <T extends object>(): Partial<T> => {

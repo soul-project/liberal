@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import { ComponentType, useState } from "react";
 import { useMutation } from "react-query";
 
+import useLogin from "./useLogin";
 import { Props } from "../components/Editor/RichTextEditor";
 import TitleInput from "../components/Editor/TitleInput";
 
@@ -18,6 +19,7 @@ export default function useEditor({ onSuccess }: { onSuccess: () => void }) {
   const [contentValue, setContentValue] = useState(
     "<p>Start typing something...</p>"
   );
+  const { userId } = useLogin();
   const [titleValue, setTitleValue] = useState("");
 
   const { data, error, isLoading, mutate } = useMutation(
@@ -25,6 +27,7 @@ export default function useEditor({ onSuccess }: { onSuccess: () => void }) {
       const { data } = await axios.post("/api/posts", {
         content: contentValue,
         title: titleValue,
+        userId,
       });
       return data;
     },

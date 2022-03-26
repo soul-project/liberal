@@ -21,7 +21,7 @@
     "@mantine/spotlight": "^4.0.7",
     "axios": "^0.26.1",
     "dayjs": "^1.11.0",
-    "firebase": "^9.6.10",
+    "firebase-admin": "^10.0.2",
     "form-data": "^4.0.0",
     "next": "12.1.0",
     "quill-markdown-shortcuts": "^0.0.10",
@@ -30,6 +30,7 @@
     "react-dom": "^17.0.2",
     "react-query": "^3.34.17",
     "tabler-icons-react": "^1.41.0",
+    "ulid": "^2.3.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

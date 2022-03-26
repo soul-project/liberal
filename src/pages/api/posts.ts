@@ -2,8 +2,11 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 import FormData from "form-data";
 import { v4 as uuidv4 } from "uuid";
+import { ulid } from "ulid";
 
 import { HTMLTemplate } from "./posts/template";
+
+import db from "../../firebase/firestoreClient";
 
 type Data = {
   cid: string;
@@ -29,14 +32,35 @@ async function addToIPFS(formData: FormData) {
   return cids;
 }
 
-async function addToFirestore() {}
+async function addToFirestore(userId: number, cid: string) {
+  // add to user posts
+  const docId = ulid();
+  if ((await db.collection("userPosts").listDocuments()).length === 0) {
+    await db
+      .collection("userPosts")
+      .doc(String(userId))
+      .set({ [docId]: cid });
+  } else {
+    await db
+      .collection("userPosts")
+      .doc(String(userId))
+      .update({ [docId]: cid });
+  }
+
+  // add to global posts
+  await db.collection("posts").doc(docId).set({ cid });
+}
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
   if (req.method === "POST") {
-    // TODO: validate request with class-validator or something
+    const {
+      userId,
+      content,
+      title,
+    }: { userId: number; content: string; title: string } = req.body;
     try {
       const folderUUID = uuidv4();
 
@@ -44,8 +68,8 @@ export default async function handler(
       formData.append(
         "file",
         HTMLTemplate({
-          content: req.body.content as string,
-          title: req.body.title as string,
+          content: content,
+          title: title,
         }),
         {
           filename: encodeURIComponent(`${folderUUID}/index.html`),
@@ -54,9 +78,11 @@ export default async function handler(
 
       const cids = await addToIPFS(formData);
       const folderCid = cids[cids.length - 1].Hash;
+      await addToFirestore(userId, folderCid);
 
       res.status(201).json({ cid: folderCid });
     } catch (err) {
+      console.log(err);
       res.status(500).end();
     }
   }
