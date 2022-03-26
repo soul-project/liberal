@@ -1,4 +1,6 @@
-import { Box } from "@mantine/core";
+import { Box, Button } from "@mantine/core";
+
+import Avatar from "./NavigationBar/Avatar";
 
 export default function NavigationBar({ primaryButton }: Props) {
   return (
@@ -12,8 +14,22 @@ export default function NavigationBar({ primaryButton }: Props) {
         justifyContent: "space-between",
       })}
     >
-      Logo
-      {primaryButton}
+      <Box>
+        <Button component="a" href="/" variant="outline">
+          Logo
+        </Button>
+      </Box>
+      <Box
+        sx={() => ({
+          display: "flex",
+          flexDirection: "row",
+          gap: "10px",
+          alignItems: "center",
+        })}
+      >
+        {primaryButton}
+        <Avatar size={30} name="lws803" />
+      </Box>
     </Box>
   );
 }
