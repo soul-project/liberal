@@ -1,10 +1,6 @@
 import { Box, Button } from "@mantine/core";
 
-export default function NavigationBar({
-  onPublish,
-  canPublish,
-  isPublishing,
-}: Props) {
+export default function NavigationBar({ primaryButton }: Props) {
   return (
     <Box
       sx={() => ({
@@ -12,20 +8,11 @@ export default function NavigationBar({
         backgroundColor: "transparent",
       })}
     >
-      <Button
-        onClick={onPublish}
-        color="teal"
-        disabled={!canPublish}
-        loading={isPublishing}
-      >
-        Publish
-      </Button>
+      {primaryButton}
     </Box>
   );
 }
 
 type Props = {
-  onPublish: () => void;
-  canPublish: boolean;
-  isPublishing: boolean;
+  primaryButton: React.ReactNode;
 };

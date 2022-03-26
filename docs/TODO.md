@@ -8,3 +8,4 @@
 ## Misc
 
 - Add syntax highlighting to RichTextEditor
+- Switch all to arrowhead functions, including components

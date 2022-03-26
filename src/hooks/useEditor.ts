@@ -3,11 +3,11 @@ import dynamic from "next/dynamic";
 import { ComponentType, useState } from "react";
 import { useMutation } from "react-query";
 
-import { Props } from "../components/RichTextEditor";
+import { Props } from "../components/Editor/RichTextEditor";
 import TitleInput from "../components/Editor/TitleInput";
 
 const RichTextEditor: ComponentType<Props> = dynamic(
-  () => import("../components/RichTextEditor"),
+  () => import("../components/Editor/RichTextEditor"),
   {
     ssr: false,
     loading: () => null,
