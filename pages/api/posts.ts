@@ -14,6 +14,7 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   if (req.method === "POST") {
+    // TODO: validate request with class-validator or something
     try {
       const folderUUID = uuidv4();
 
@@ -22,7 +23,7 @@ export default async function handler(
         "file",
         HTMLTemplate({
           content: req.body.content as string,
-          title: "Title of the page",
+          title: req.body.title as string,
         }),
         {
           filename: encodeURIComponent(`${folderUUID}/index.html`),

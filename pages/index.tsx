@@ -11,17 +11,26 @@ import NavigationBar from "../components/NavigationBar";
 const Home: NextPage = () => {
   const notifications = useNotifications();
 
-  const { Editor, publish, value, setValue, canPublish, isPublishing } =
-    useEditor({
-      onSuccess: () => {
-        notifications.showNotification({
-          title: "Post submitted",
-          message: "Your article will be made available soon",
-          icon: <Check size={18} />,
-          color: "teal",
-        });
-      },
-    });
+  const {
+    Editor,
+    publish,
+    contentValue,
+    setContentValue,
+    canPublish,
+    isPublishing,
+    Title,
+    titleValue,
+    setTitleValue,
+  } = useEditor({
+    onSuccess: () => {
+      notifications.showNotification({
+        title: "Post submitted",
+        message: "Your article will be made available soon",
+        icon: <Check size={18} />,
+        color: "teal",
+      });
+    },
+  });
 
   // TODO: Move this to new-page url, and also have it such then after submission it redirects you
   // to the url that you just published to.
@@ -40,7 +49,7 @@ const Home: NextPage = () => {
       <main>
         <Box
           sx={(theme) => ({
-            height: "100vh",
+            minHeight: "100vh",
             backgroundColor:
               theme.colorScheme === "dark"
                 ? theme.colors.dark[5]
@@ -52,8 +61,9 @@ const Home: NextPage = () => {
             canPublish={canPublish}
             isPublishing={isPublishing}
           />
-          <Box sx={() => ({ padding: "50px", height: "90%" })}>
-            <Editor value={value} onChange={setValue} />
+          <Box sx={() => ({ padding: "10px 50px 50px 50px" })}>
+            <Title value={titleValue} onChange={setTitleValue} />
+            <Editor value={contentValue} onChange={setContentValue} />
           </Box>
         </Box>
       </main>

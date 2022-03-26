@@ -4,6 +4,7 @@ import { ComponentType, useState } from "react";
 import { useMutation } from "react-query";
 
 import { Props } from "../components/RichTextEditor";
+import TitleInput from "../components/Editor/TitleInput";
 
 const RichTextEditor: ComponentType<Props> = dynamic(
   () => import("../components/RichTextEditor"),
@@ -14,14 +15,21 @@ const RichTextEditor: ComponentType<Props> = dynamic(
 );
 
 export default function useEditor({ onSuccess }: { onSuccess: () => void }) {
-  const [value, setValue] = useState("<p>Start typing something...</p>");
+  const [contentValue, setContentValue] = useState(
+    "<p>Start typing something...</p>"
+  );
+  const [titleValue, setTitleValue] = useState("");
+
   const { data, error, isLoading, mutate } = useMutation(
     async () => {
-      const { data } = await axios.post("/api/posts", { content: value });
+      const { data } = await axios.post("/api/posts", {
+        content: contentValue,
+        title: titleValue,
+      });
       return data;
     },
     {
-      mutationKey: ["/api/posts", value],
+      mutationKey: ["/api/posts", contentValue, titleValue],
       onSuccess,
     }
   );
@@ -29,12 +37,17 @@ export default function useEditor({ onSuccess }: { onSuccess: () => void }) {
 
   return {
     Editor: RichTextEditor,
+    Title: TitleInput,
     publish: mutate,
-    value,
-    setValue,
+    contentValue,
+    setContentValue,
     canPublish:
-      value !== "<p>Start typing something...</p>" && value !== "<p><br></p>",
+      contentValue !== "<p>Start typing something...</p>" &&
+      contentValue !== "<p><br></p>" &&
+      titleValue !== "", // TODO: add better validation for this
     isPublishing: isLoading,
     data,
+    titleValue,
+    setTitleValue,
   };
 }
