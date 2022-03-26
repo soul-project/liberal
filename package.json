@@ -25,7 +25,8 @@
     "next": "12.1.0",
     "quill-markdown-shortcuts": "^0.0.10",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "react-query": "^3.34.17"
   },
   "devDependencies": {
     "@types/node": "17.0.23",

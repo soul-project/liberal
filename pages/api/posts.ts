@@ -5,6 +5,7 @@ import FormData from "form-data";
 type Data = {
   cid: string;
 };
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
@@ -13,6 +14,7 @@ export default async function handler(
     try {
       const formData = new FormData();
       formData.append("file", req.body.content);
+      console.log(formData);
 
       const { Hash } = (
         await axios.post<{ Hash: string }>(

@@ -7,7 +7,8 @@ import useEditor from "../hooks/useEditor";
 import NavigationBar from "../components/NavigationBar";
 
 const Home: NextPage = () => {
-  const { Editor, publish, value, setValue, canPublish } = useEditor();
+  const { Editor, publish, value, setValue, canPublish, isPublishing } =
+    useEditor();
 
   return (
     <div>
@@ -31,7 +32,11 @@ const Home: NextPage = () => {
                 : theme.colors.gray[0],
           })}
         >
-          <NavigationBar onPublish={publish!} canPublish={canPublish} />
+          <NavigationBar
+            onPublish={publish!}
+            canPublish={canPublish}
+            isPublishing={isPublishing}
+          />
           <Box sx={() => ({ padding: "50px", height: "90%" })}>
             <Editor value={value} onChange={setValue} />
           </Box>
