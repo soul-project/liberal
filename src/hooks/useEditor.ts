@@ -46,7 +46,8 @@ export default function useEditor({ onSuccess }: { onSuccess: () => void }) {
     canPublish:
       contentValue !== "<p>Start typing something...</p>" &&
       contentValue !== "<p><br></p>" &&
-      titleValue !== "", // TODO: add better validation for this
+      titleValue !== "" && // TODO: add better validation for this
+      userId,
     isPublishing: isLoading,
     titleValue,
     setTitleValue,

@@ -1,6 +1,5 @@
 # Things to do
 
-- remove use of console log and use a better logging tool
 - Adjust the font size accordingly and change the font style
   - Make scroll follow the cursor
 - Add import plugin for eslint

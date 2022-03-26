@@ -1,5 +1,9 @@
 import admin from "firebase-admin";
 
+import Logger from "../utils/logger";
+
+const logger = Logger("firestoreClient");
+
 // Initialize Firebase
 if (!admin.apps.length) {
   try {
@@ -11,7 +15,7 @@ if (!admin.apps.length) {
       }),
     });
   } catch (error) {
-    console.log("Firebase admin initialization error", error);
+    logger.error(error);
   }
 }
 export default admin.firestore();

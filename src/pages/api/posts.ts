@@ -6,7 +6,10 @@ import { ulid } from "ulid";
 
 import { HTMLTemplate } from "./posts/template";
 
+import Logger from "../../utils/logger";
 import db from "../../firebase/firestoreClient";
+
+const logger = Logger("api/posts");
 
 type Data = {
   cid: string;
@@ -82,7 +85,7 @@ export default async function handler(
 
       res.status(201).json({ cid: folderCid });
     } catch (err) {
-      console.log(err);
+      logger.error(err);
       res.status(500).end();
     }
   }
