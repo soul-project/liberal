@@ -3,6 +3,8 @@ import axios from "axios";
 import FormData from "form-data";
 import { v4 as uuidv4 } from "uuid";
 
+import { HTMLTemplate } from "./posts/template";
+
 type Data = {
   cid: string;
 };
@@ -16,9 +18,16 @@ export default async function handler(
       const folderUUID = uuidv4();
 
       const formData = new FormData();
-      formData.append("file", req.body.content, {
-        filename: encodeURIComponent(`${folderUUID}/index.html`),
-      });
+      formData.append(
+        "file",
+        HTMLTemplate({
+          content: req.body.content as string,
+          title: "Title of the page",
+        }),
+        {
+          filename: encodeURIComponent(`${folderUUID}/index.html`),
+        }
+      );
 
       const response = (
         await axios.post<string>(

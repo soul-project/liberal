@@ -2,13 +2,26 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { Box, Text } from "@mantine/core";
+import { useNotifications } from "@mantine/notifications";
+import { Check } from "tabler-icons-react";
 
 import useEditor from "../hooks/useEditor";
 import NavigationBar from "../components/NavigationBar";
 
 const Home: NextPage = () => {
+  const notifications = useNotifications();
+
   const { Editor, publish, value, setValue, canPublish, isPublishing } =
-    useEditor();
+    useEditor({
+      onSuccess: () => {
+        notifications.showNotification({
+          title: "Post submitted",
+          message: "Your article will be made available soon",
+          icon: <Check size={18} />,
+          color: "teal",
+        });
+      },
+    });
 
   // TODO: Move this to new-page url, and also have it such then after submission it redirects you
   // to the url that you just published to.

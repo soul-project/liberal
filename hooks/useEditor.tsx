@@ -13,7 +13,7 @@ const RichTextEditor: ComponentType<Props> = dynamic(
   }
 );
 
-export default function useEditor() {
+export default function useEditor({ onSuccess }: { onSuccess: () => void }) {
   const [value, setValue] = useState("<p>Start typing something...</p>");
   const { data, error, isLoading, mutate } = useMutation(
     async () => {
@@ -22,6 +22,7 @@ export default function useEditor() {
     },
     {
       mutationKey: ["/api/posts", value],
+      onSuccess,
     }
   );
   console.log(data, error);
@@ -34,5 +35,6 @@ export default function useEditor() {
     canPublish:
       value !== "<p>Start typing something...</p>" && value !== "<p><br></p>",
     isPublishing: isLoading,
+    data,
   };
 }
