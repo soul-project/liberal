@@ -3,6 +3,7 @@ import Head from "next/head";
 import { Box, Button } from "@mantine/core";
 import { useNotifications } from "@mantine/notifications";
 import { Check, FileUpload } from "tabler-icons-react";
+import { useEffect, useRef } from "react";
 
 import useEditor from "../hooks/useEditor";
 import NavigationBar from "../components/NavigationBar";
@@ -11,6 +12,11 @@ import Page from "../components/Page";
 
 const New: NextPage = () => {
   const notifications = useNotifications();
+  const titleInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (titleInputRef.current) titleInputRef.current.focus();
+  }, []);
 
   const {
     Editor,
@@ -61,7 +67,11 @@ const New: NextPage = () => {
             }
           />
           <Box sx={() => ({ padding: "10px 50px 50px 50px" })}>
-            <Title value={titleValue} onChange={setTitleValue} />
+            <Title
+              value={titleValue}
+              onChange={setTitleValue}
+              ref={titleInputRef}
+            />
             <Editor value={contentValue} onChange={setContentValue} />
           </Box>
         </Page>

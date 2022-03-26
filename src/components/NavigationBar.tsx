@@ -15,6 +15,7 @@ export default function NavigationBar({ primaryButton }: Props) {
         flexDirection: "row",
         width: "100%",
         justifyContent: "space-between",
+        alignItems: "center",
       })}
     >
       <Box>
@@ -26,7 +27,7 @@ export default function NavigationBar({ primaryButton }: Props) {
         sx={() => ({
           display: "flex",
           flexDirection: "row",
-          gap: "10px",
+          gap: "18px",
           alignItems: "center",
         })}
       >

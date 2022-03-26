@@ -1,8 +1,7 @@
 # Things to do
 
-- Add user account functionalities -> connect with soul-network
+- Consider using firebase to store some of the user information for this platform
 - Package this and maybe run ipfs in the same docker container
-- Add linting for this
 - Adjust the font size accordingly
 - Add an option for folks to pin the article forever
   - Add a quota to the number of articles they can pin

@@ -66,7 +66,8 @@ export default function useLogin() {
 
   const logout = () => removeCookies("soul-token");
 
-  // TODO: Add other states like logging in state and etc
+  // TODO: Consider trying for refresh token when we can't login
+
   return { username, login, logout, loggingIn };
 }
 
