@@ -1,13 +1,18 @@
-import { Box, Button } from "@mantine/core";
+import { Box } from "@mantine/core";
 
 export default function NavigationBar({ primaryButton }: Props) {
   return (
     <Box
       sx={() => ({
-        padding: "20px",
+        padding: "30px",
         backgroundColor: "transparent",
+        display: "flex",
+        flexDirection: "row",
+        width: "100%",
+        justifyContent: "space-between",
       })}
     >
+      Logo
       {primaryButton}
     </Box>
   );
