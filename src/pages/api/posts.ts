@@ -36,19 +36,15 @@ async function addToIPFS(formData: FormData) {
 }
 
 async function addToFirestore(userId: number, cid: string) {
-  // add to user posts
   const docId = ulid();
-  if ((await db.collection("userPosts").listDocuments()).length === 0) {
-    await db
-      .collection("userPosts")
-      .doc(String(userId))
-      .set({ [docId]: cid });
-  } else {
-    await db
-      .collection("userPosts")
-      .doc(String(userId))
-      .update({ [docId]: cid });
-  }
+
+  // add to user posts
+  await db
+    .collection("users")
+    .doc(String(userId))
+    .collection("posts")
+    .doc(docId)
+    .set({ cid });
 
   // add to global posts
   await db.collection("posts").doc(docId).set({ cid });
