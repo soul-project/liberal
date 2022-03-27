@@ -32,7 +32,7 @@ const NavigationBar = ({ primaryButton }: Props) => {
           alignItems: "center",
         })}
       >
-        {primaryButton}
+        {username && primaryButton}
         {username ? (
           <AvatarButton onClick={logout} username={username} />
         ) : (
