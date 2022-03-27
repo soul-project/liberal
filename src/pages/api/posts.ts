@@ -35,8 +35,17 @@ const addToIPFS = async (formData: FormData) => {
   return cids;
 };
 
-const addToFirestore = async (userId: number, cid: string) => {
+const addToFirestore = async ({
+  userId,
+  cid,
+  title,
+}: {
+  userId: number;
+  cid: string;
+  title: string;
+}) => {
   const docId = ulid();
+  const data = { title, cid };
 
   // add to user posts
   await db
@@ -44,10 +53,10 @@ const addToFirestore = async (userId: number, cid: string) => {
     .doc(String(userId))
     .collection("posts")
     .doc(docId)
-    .set({ cid });
+    .set(data);
 
   // add to global posts
-  await db.collection("posts").doc(docId).set({ cid });
+  await db.collection("posts").doc(docId).set(data);
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
@@ -76,7 +85,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 
       const cids = await addToIPFS(formData);
       const folderCid = cids[cids.length - 1].Hash;
-      await addToFirestore(userId, folderCid);
+      await addToFirestore({ userId, cid: folderCid, title });
 
       res.status(201).json({ cid: folderCid });
     } catch (err) {
