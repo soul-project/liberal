@@ -2,10 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 
-const PLATFORM_ID = 2;
-const CALLBACK = "http://localhost:3000";
-
-const useLogin = () => {
+const useLogin = ({ platformId, callback }: Args) => {
   const [
     {
       "soul-token": soulToken,
@@ -33,7 +30,7 @@ const useLogin = () => {
       const {
         data: { accessToken, refreshToken },
       } = await axios.post(
-        `http://api.soul-network.com/v1/auth/verify?callback=${CALLBACK}&code=${code}`
+        `http://api.soul-network.com/v1/auth/verify?callback=${callback}&code=${code}`
       );
       setCookie("soul-token", accessToken, { path: "/" });
       setCookie("soul-refresh-token", refreshToken, { path: "/" });
@@ -47,7 +44,7 @@ const useLogin = () => {
 
     const params = getSearchParams<{ code: string }>();
     if (params.code) login(params.code);
-  }, [setCookie, setIsLoggingIn]);
+  }, [callback, setCookie, setIsLoggingIn]);
 
   // get user credentials
   useEffect(() => {
@@ -57,7 +54,7 @@ const useLogin = () => {
         const {
           data: { accessToken },
         } = await axios.post(
-          `https://api.soul-network.com/v1/auth/refresh?platformId=${PLATFORM_ID}`,
+          `https://api.soul-network.com/v1/auth/refresh?platformId=${platformId}`,
           { refreshToken: soulRefreshToken }
         );
         setCookie("soul-token", accessToken, { path: "/" });
@@ -103,7 +100,14 @@ const useLogin = () => {
     } else {
       removeCookies("soul-cached-credentials");
     }
-  }, [soulToken, removeCookies, setCookie, setIsLoggingIn, soulRefreshToken]);
+  }, [
+    soulRefreshToken,
+    soulToken,
+    removeCookies,
+    setCookie,
+    setIsLoggingIn,
+    platformId,
+  ]);
 
   useEffect(() => {
     setUserCredentials(soulCachedCredentials);
@@ -112,7 +116,7 @@ const useLogin = () => {
   const login = () => {
     if (window?.open !== undefined) {
       window.open(
-        `https://login.soul-network.com/?platformId=${PLATFORM_ID}&callback=${CALLBACK}`,
+        `https://login.soul-network.com/?platformId=${platformId}&callback=${callback}`,
         "_self"
       );
     }
@@ -124,6 +128,11 @@ const useLogin = () => {
 };
 
 export default useLogin;
+
+type Args = {
+  platformId: number;
+  callback: string;
+};
 
 const getSearchParams = <T extends object>(): Partial<T> => {
   // server side rendering

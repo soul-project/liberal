@@ -5,7 +5,10 @@ import AvatarButton from "./NavigationBar/AvatarButton";
 import useLogin from "../hooks/useLogin";
 
 const NavigationBar = ({ primaryButton }: Props) => {
-  const { username, login, logout, loggingIn } = useLogin();
+  const { username, login, logout, loggingIn } = useLogin({
+    platformId: 2,
+    callback: "http://localhost:3000",
+  });
 
   return (
     <Box

@@ -25,7 +25,10 @@ const useEditor = ({
   const [contentValue, setContentValue] = useState(
     "<p>Start typing something...</p>"
   );
-  const { token } = useLogin();
+  const { token } = useLogin({
+    platformId: 2,
+    callback: "http://localhost:3000",
+  });
   const [titleValue, setTitleValue] = useState("");
 
   const { data, error, isLoading, mutate } = useMutation(
