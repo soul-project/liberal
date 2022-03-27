@@ -25,7 +25,7 @@ const useEditor = ({
   const [contentValue, setContentValue] = useState(
     "<p>Start typing something...</p>"
   );
-  const { userId } = useLogin();
+  const { token } = useLogin();
   const [titleValue, setTitleValue] = useState("");
 
   const { data, error, isLoading, mutate } = useMutation(
@@ -33,7 +33,7 @@ const useEditor = ({
       const { data } = await axios.post("/api/posts", {
         content: contentValue,
         title: titleValue,
-        userId,
+        token,
       });
       return data;
     },
@@ -54,7 +54,7 @@ const useEditor = ({
       contentValue !== "<p>Start typing something...</p>" &&
       contentValue !== "<p><br></p>" &&
       titleValue !== "" && // TODO: add better validation for this
-      userId,
+      token,
     isPublishing: isLoading,
     titleValue,
     setTitleValue,

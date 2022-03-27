@@ -10,6 +10,7 @@ const useLogin = () => {
   const [userCredentials, setUserCredentials] = useState<{
     username: string;
     userId: number;
+    token: string;
   }>();
   const [loggingIn, setIsLoggingIn] = useState(false);
 
@@ -45,7 +46,11 @@ const useLogin = () => {
             Authorization: `Bearer ${cookies["soul-token"]}`,
           },
         });
-        setUserCredentials({ username, userId: id });
+        setUserCredentials({
+          username,
+          userId: id,
+          token: cookies["soul-token"],
+        });
       } catch (_error) {
         removeCookies("soul-token");
       }

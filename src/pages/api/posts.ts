@@ -59,15 +59,32 @@ const addToFirestore = async ({
   await db.collection("posts").doc(docId).set(data);
 };
 
+const getUserFromSoul = async (token: string) => {
+  const {
+    data: { username, id },
+  } = await axios.get<{ username: string; id: number }>(
+    "https://api.soul-network.com/v1/users/me",
+    {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return { username, userId: id };
+};
+
 const handler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   if (req.method === "POST") {
     const {
-      userId,
       content,
       title,
-    }: { userId: number; content: string; title: string } = req.body;
+      token,
+    }: { token: string; content: string; title: string } = req.body;
     try {
-      if (!userId) throw new Error("User not logged in");
+      if (!token) throw new Error("Token not provided");
+      const { userId } = await getUserFromSoul(token);
 
       const folderUUID = uuidv4();
 
