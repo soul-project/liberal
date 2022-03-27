@@ -3,7 +3,7 @@ import axios from "axios";
 import FormData from "form-data";
 import { v4 as uuidv4 } from "uuid";
 import { ulid } from "ulid";
-import { getUserFromSoul } from "@soul-project/react-soul-utils";
+import { getUserCredentialsFromToken } from "@soul-project/react-soul-utils";
 
 import { HTMLTemplate } from "./posts/template";
 
@@ -69,7 +69,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     }: { token: string; content: string; title: string } = req.body;
     try {
       if (!token) throw new Error("Token not provided");
-      const { userId } = await getUserFromSoul(token);
+      const { userId } = await getUserCredentialsFromToken(token);
 
       const folderUUID = uuidv4();
 
