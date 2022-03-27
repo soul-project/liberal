@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { Box, Button } from "@mantine/core";
 import { useNotifications } from "@mantine/notifications";
-import { Check, FileUpload } from "tabler-icons-react";
+import { Check, FileUpload, X } from "tabler-icons-react";
 import { useEffect, useRef } from "react";
 
 import useEditor from "../hooks/useEditor";
@@ -35,6 +35,14 @@ const New: NextPage = () => {
         message: "Your article will be made available soon",
         icon: <Check size={18} />,
         color: "teal",
+      });
+    },
+    onError: () => {
+      notifications.showNotification({
+        title: "Post failed",
+        message: "Something went wrong",
+        icon: <X size={18} />,
+        color: "red",
       });
     },
   });

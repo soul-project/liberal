@@ -15,7 +15,13 @@ const RichTextEditor: ComponentType<Props> = dynamic(
   }
 );
 
-export default function useEditor({ onSuccess }: { onSuccess: () => void }) {
+export default function useEditor({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: () => void;
+  onError?: () => void;
+}) {
   const [contentValue, setContentValue] = useState(
     "<p>Start typing something...</p>"
   );
@@ -34,6 +40,7 @@ export default function useEditor({ onSuccess }: { onSuccess: () => void }) {
     {
       mutationKey: ["/api/posts", contentValue, titleValue],
       onSuccess,
+      onError,
     }
   );
 

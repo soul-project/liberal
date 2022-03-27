@@ -65,6 +65,8 @@ export default async function handler(
       title,
     }: { userId: number; content: string; title: string } = req.body;
     try {
+      if (!userId) throw new Error("User not logged in");
+
       const folderUUID = uuidv4();
 
       const formData = new FormData();
