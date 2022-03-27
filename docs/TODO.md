@@ -14,5 +14,4 @@
 ## Misc
 
 - Add syntax highlighting to RichTextEditor
-- Switch all to arrowhead functions, including components
 - Consider adding an email notification for when the article is available

@@ -15,13 +15,13 @@ const RichTextEditor: ComponentType<Props> = dynamic(
   }
 );
 
-export default function useEditor({
+const useEditor = ({
   onSuccess,
   onError,
 }: {
   onSuccess: () => void;
   onError?: () => void;
-}) {
+}) => {
   const [contentValue, setContentValue] = useState(
     "<p>Start typing something...</p>"
   );
@@ -61,4 +61,6 @@ export default function useEditor({
     data,
     error,
   };
-}
+};
+
+export default useEditor;

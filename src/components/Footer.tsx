@@ -1,6 +1,6 @@
 import { Box, Text, Image } from "@mantine/core";
 
-export default function Footer() {
+const Footer = () => {
   return (
     <Box
       sx={(theme) => ({
@@ -42,3 +42,5 @@ export default function Footer() {
     </Box>
   );
 }
+
+export default Footer;

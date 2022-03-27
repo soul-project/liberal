@@ -1,7 +1,7 @@
 import { Box } from "@mantine/core";
 import Image from "next/image";
 
-export default function Avatar({ size, name }: Props) {
+const Avatar = ({ size, name }: Props) => {
   const diceBearUrl = `https://avatars.dicebear.com/api/identicon/${name}.svg`;
   return (
     <Box
@@ -22,9 +22,11 @@ export default function Avatar({ size, name }: Props) {
       />
     </Box>
   );
-}
+};
 
 type Props = {
   size: number;
   name: string;
 };
+
+export default Avatar;

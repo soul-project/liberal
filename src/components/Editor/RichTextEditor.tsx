@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import Editor, { Quill } from "@mantine/rte";
 import MarkdownShortcuts from "quill-markdown-shortcuts";
 
-export default function RichTextEditor({ onChange, value }: Props) {
+const RichTextEditor = ({ onChange, value }: Props) => {
   const modules = useMemo(
     () => ({
       history: { delay: 2500, userOnly: true },
@@ -29,9 +29,11 @@ export default function RichTextEditor({ onChange, value }: Props) {
       ]}
     />
   );
-}
+};
 
 export type Props = {
   value: string;
   onChange: (value: string) => void;
 };
+
+export default RichTextEditor;

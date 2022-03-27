@@ -7,7 +7,7 @@ import "../styles/globals.css";
 
 const queryClient = new QueryClient();
 
-function MyApp({ Component, pageProps }: AppProps) {
+const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <QueryClientProvider client={queryClient}>
       <MantineProvider theme={{ colorScheme: "dark" }}>
@@ -28,6 +28,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       </MantineProvider>
     </QueryClientProvider>
   );
-}
+};
 
 export default MyApp;

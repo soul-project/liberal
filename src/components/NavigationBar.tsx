@@ -4,7 +4,7 @@ import AvatarButton from "./NavigationBar/AvatarButton";
 
 import useLogin from "../hooks/useLogin";
 
-export default function NavigationBar({ primaryButton }: Props) {
+const NavigationBar = ({ primaryButton }: Props) => {
   const { username, login, logout, loggingIn } = useLogin();
 
   return (
@@ -48,8 +48,10 @@ export default function NavigationBar({ primaryButton }: Props) {
       </Box>
     </Box>
   );
-}
+};
 
 type Props = {
   primaryButton: React.ReactNode;
 };
+
+export default NavigationBar;

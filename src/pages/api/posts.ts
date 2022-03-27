@@ -15,7 +15,7 @@ type Data = {
   cid: string;
 };
 
-async function addToIPFS(formData: FormData) {
+const addToIPFS = async (formData: FormData) => {
   const response = (
     await axios.post<string>(
       `http://${process.env.IPFS_HOSTNAME}:${process.env.IPFS_PORT}/api/v0/add`,
@@ -33,9 +33,9 @@ async function addToIPFS(formData: FormData) {
     .map<{ Hash: string }>((data) => JSON.parse(data)); // Parse each line
 
   return cids;
-}
+};
 
-async function addToFirestore(userId: number, cid: string) {
+const addToFirestore = async (userId: number, cid: string) => {
   const docId = ulid();
 
   // add to user posts
@@ -48,12 +48,9 @@ async function addToFirestore(userId: number, cid: string) {
 
   // add to global posts
   await db.collection("posts").doc(docId).set({ cid });
-}
+};
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
-) {
+const handler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   if (req.method === "POST") {
     const {
       userId,
@@ -88,4 +85,6 @@ export default async function handler(
     }
   }
   res.status(404).end();
-}
+};
+
+export default handler;

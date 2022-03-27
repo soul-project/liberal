@@ -1,6 +1,6 @@
 import { Box } from "@mantine/core";
 
-export default function Page({ children, ...props }: Props) {
+const Page = ({ children, ...props }: Props) => {
   return (
     <Box
       sx={(theme) => ({
@@ -15,8 +15,10 @@ export default function Page({ children, ...props }: Props) {
       {children}
     </Box>
   );
-}
+};
 
 type Props = {
   children?: React.ReactNode;
 } & React.ComponentProps<typeof Box>;
+
+export default Page;

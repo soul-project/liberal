@@ -5,7 +5,7 @@ import { useCookies } from "react-cookie";
 const PLATFORM_ID = 2;
 const CALLBACK = "http://localhost:3000";
 
-export default function useLogin() {
+const useLogin = () => {
   const [cookies, setCookie, removeCookies] = useCookies(["soul-token"]);
   const [userCredentials, setUserCredentials] = useState<{
     username: string;
@@ -72,7 +72,7 @@ export default function useLogin() {
   // TODO: Consider trying for refresh token when we can't login
 
   return { login, logout, loggingIn, ...userCredentials };
-}
+};
 
 const getSearchParams = <T extends object>(): Partial<T> => {
   // server side rendering
@@ -88,3 +88,5 @@ const getSearchParams = <T extends object>(): Partial<T> => {
     },
   }) as T;
 };
+
+export default useLogin;
