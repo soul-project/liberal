@@ -1,11 +1,10 @@
 import { Box, Button } from "@mantine/core";
+import { useLogin } from "@soul-project/react-soul-utils";
 
 import AvatarButton from "./NavigationBar/AvatarButton";
 
-import useLogin from "../hooks/useLogin";
-
 const NavigationBar = ({ primaryButton }: Props) => {
-  const { username, login, logout, loggingIn } = useLogin({
+  const { userCredentials, login, logout, loggingIn } = useLogin({
     platformId: 2,
     callback: "http://localhost:3000",
   });
@@ -35,9 +34,9 @@ const NavigationBar = ({ primaryButton }: Props) => {
           alignItems: "center",
         })}
       >
-        {username && primaryButton}
-        {username ? (
-          <AvatarButton onClick={logout} username={username} />
+        {userCredentials && primaryButton}
+        {userCredentials ? (
+          <AvatarButton onClick={logout} username={userCredentials.username} />
         ) : (
           <Button
             onClick={login}

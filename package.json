@@ -20,6 +20,7 @@
     "@mantine/prism": "^4.0.7",
     "@mantine/rte": "^4.0.7",
     "@mantine/spotlight": "^4.0.7",
+    "@soul-project/react-soul-utils": "^0.0.2",
     "axios": "^0.26.1",
     "dayjs": "^1.11.0",
     "firebase-admin": "^10.0.2",

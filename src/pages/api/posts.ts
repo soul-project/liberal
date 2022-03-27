@@ -3,6 +3,7 @@ import axios from "axios";
 import FormData from "form-data";
 import { v4 as uuidv4 } from "uuid";
 import { ulid } from "ulid";
+import { getUserFromSoul } from "@soul-project/react-soul-utils";
 
 import { HTMLTemplate } from "./posts/template";
 
@@ -57,22 +58,6 @@ const addToFirestore = async ({
 
   // add to global posts
   await db.collection("posts").doc(docId).set(data);
-};
-
-const getUserFromSoul = async (token: string) => {
-  const {
-    data: { username, id },
-  } = await axios.get<{ username: string; id: number }>(
-    "https://api.soul-network.com/v1/users/me",
-    {
-      headers: {
-        "Content-type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-
-  return { username, userId: id };
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {

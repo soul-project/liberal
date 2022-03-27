@@ -2,8 +2,8 @@ import axios from "axios";
 import dynamic from "next/dynamic";
 import { ComponentType, useState } from "react";
 import { useMutation } from "react-query";
+import { useLogin } from "@soul-project/react-soul-utils";
 
-import useLogin from "./useLogin";
 import { Props } from "../components/Editor/RichTextEditor";
 import TitleInput from "../components/Editor/TitleInput";
 
@@ -25,7 +25,7 @@ const useEditor = ({
   const [contentValue, setContentValue] = useState(
     "<p>Start typing something...</p>"
   );
-  const { token } = useLogin({
+  const { userCredentials } = useLogin({
     platformId: 2,
     callback: "http://localhost:3000",
   });
@@ -36,7 +36,7 @@ const useEditor = ({
       const { data } = await axios.post("/api/posts", {
         content: contentValue,
         title: titleValue,
-        token,
+        token: userCredentials!.token,
       });
       return data;
     },
@@ -57,7 +57,7 @@ const useEditor = ({
       contentValue !== "<p>Start typing something...</p>" &&
       contentValue !== "<p><br></p>" &&
       titleValue !== "" && // TODO: add better validation for this
-      token,
+      userCredentials,
     isPublishing: isLoading,
     titleValue,
     setTitleValue,
