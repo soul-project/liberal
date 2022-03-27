@@ -2,12 +2,18 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { Button } from "@mantine/core";
 import { File } from "tabler-icons-react";
+import { useLogin } from "@soul-project/react-soul-utils";
 
 import NavigationBar from "../components/NavigationBar";
 import Footer from "../components/Footer";
 import Page from "../components/Page";
 
 const Home: NextPage = () => {
+  const { userCredentials, login, logout, isLoggingIn } = useLogin({
+    platformId: 2,
+    callback: "http://localhost:3000",
+  });
+
   return (
     <div>
       <Head>
@@ -23,6 +29,10 @@ const Home: NextPage = () => {
       <main>
         <Page>
           <NavigationBar
+            username={userCredentials?.username}
+            onLogin={login}
+            onLogout={logout}
+            isLoggingIn={isLoggingIn}
             primaryButton={
               <Button component="a" href="/new" rightIcon={<File />}>
                 New Article

@@ -17,3 +17,4 @@
 
 - Add syntax highlighting to RichTextEditor
 - Consider adding an email notification for when the article is available
+- add tests for the react-soul-utils package

@@ -15,20 +15,11 @@ const RichTextEditor: ComponentType<Props> = dynamic(
   }
 );
 
-const useEditor = ({
-  onSuccess,
-  onError,
-}: {
-  onSuccess: () => void;
-  onError?: () => void;
-}) => {
+const useEditor = ({ onSuccess, onError, userToken }: Args) => {
   const [contentValue, setContentValue] = useState(
     "<p>Start typing something...</p>"
   );
-  const { userCredentials } = useLogin({
-    platformId: 2,
-    callback: "http://localhost:3000",
-  });
+
   const [titleValue, setTitleValue] = useState("");
 
   const { data, error, isLoading, mutate } = useMutation(
@@ -36,7 +27,7 @@ const useEditor = ({
       const { data } = await axios.post("/api/posts", {
         content: contentValue,
         title: titleValue,
-        token: userCredentials!.token,
+        token: userToken,
       });
       return data;
     },
@@ -57,7 +48,7 @@ const useEditor = ({
       contentValue !== "<p>Start typing something...</p>" &&
       contentValue !== "<p><br></p>" &&
       titleValue !== "" && // TODO: add better validation for this
-      userCredentials,
+      userToken,
     isPublishing: isLoading,
     titleValue,
     setTitleValue,
@@ -67,3 +58,9 @@ const useEditor = ({
 };
 
 export default useEditor;
+
+type Args = {
+  onSuccess: () => void;
+  onError?: () => void;
+  userToken?: string;
+};

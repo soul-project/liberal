@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import Editor, { Quill } from "@mantine/rte";
 import MarkdownShortcuts from "quill-markdown-shortcuts";
 
@@ -19,7 +19,6 @@ const RichTextEditor = ({ onChange, value }: Props) => {
         height: "100%",
       })}
       value={value}
-      placeholder="Start typing something..."
       onChange={onChange}
       modules={modules}
       controls={[

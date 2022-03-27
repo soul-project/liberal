@@ -1,9 +1,10 @@
+import { useEffect, useRef } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { Box, Button } from "@mantine/core";
 import { useNotifications } from "@mantine/notifications";
 import { Check, FileUpload, X } from "tabler-icons-react";
-import { useEffect, useRef } from "react";
+import { useLogin } from "@soul-project/react-soul-utils";
 
 import useEditor from "../hooks/useEditor";
 import NavigationBar from "../components/NavigationBar";
@@ -17,6 +18,11 @@ const New: NextPage = () => {
   useEffect(() => {
     if (titleInputRef.current) titleInputRef.current.focus();
   }, []);
+
+  const { userCredentials, login, logout, isLoggingIn } = useLogin({
+    platformId: 2,
+    callback: "http://localhost:3000",
+  });
 
   const {
     Editor,
@@ -45,6 +51,7 @@ const New: NextPage = () => {
         color: "red",
       });
     },
+    userToken: userCredentials?.token,
   });
 
   return (
@@ -62,6 +69,10 @@ const New: NextPage = () => {
       <main>
         <Page>
           <NavigationBar
+            username={userCredentials?.username}
+            onLogin={login}
+            onLogout={logout}
+            isLoggingIn={isLoggingIn}
             primaryButton={
               <Button
                 onClick={() => publish()}

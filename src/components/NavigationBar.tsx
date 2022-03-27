@@ -3,12 +3,13 @@ import { useLogin } from "@soul-project/react-soul-utils";
 
 import AvatarButton from "./NavigationBar/AvatarButton";
 
-const NavigationBar = ({ primaryButton }: Props) => {
-  const { userCredentials, login, logout, loggingIn } = useLogin({
-    platformId: 2,
-    callback: "http://localhost:3000",
-  });
-
+const NavigationBar = ({
+  primaryButton,
+  onLogin,
+  onLogout,
+  username,
+  isLoggingIn,
+}: Props) => {
   return (
     <Box
       sx={() => ({
@@ -34,15 +35,15 @@ const NavigationBar = ({ primaryButton }: Props) => {
           alignItems: "center",
         })}
       >
-        {userCredentials && primaryButton}
-        {userCredentials ? (
-          <AvatarButton onClick={logout} username={userCredentials.username} />
+        {username && primaryButton}
+        {username ? (
+          <AvatarButton onClick={onLogout} username={username} />
         ) : (
           <Button
-            onClick={login}
+            onClick={onLogin}
             variant="gradient"
             gradient={{ from: "orange", to: "red" }}
-            loading={loggingIn}
+            loading={isLoggingIn}
           >
             Login
           </Button>
@@ -54,6 +55,10 @@ const NavigationBar = ({ primaryButton }: Props) => {
 
 type Props = {
   primaryButton: React.ReactNode;
+  username?: string;
+  onLogout: () => void;
+  onLogin: () => void;
+  isLoggingIn: boolean;
 };
 
 export default NavigationBar;
