@@ -6,7 +6,10 @@ const PLATFORM_ID = 2;
 const CALLBACK = "http://localhost:3000";
 
 const useLogin = () => {
-  const [cookies, setCookie, removeCookies] = useCookies(["soul-token"]);
+  const [cookies, setCookie, removeCookies] = useCookies([
+    "soul-token",
+    "soul-refresh-token",
+  ]);
   const [userCredentials, setUserCredentials] = useState<{
     username: string;
     userId: number;
@@ -18,11 +21,13 @@ const useLogin = () => {
     const login = async (code: string) => {
       setIsLoggingIn(true);
       const {
-        data: { accessToken },
+        data: { accessToken, refreshToken },
       } = await axios.post(
         `http://api.soul-network.com/v1/auth/verify?callback=${CALLBACK}&code=${code}`
       );
       setCookie("soul-token", accessToken, { path: "/" });
+      setCookie("soul-refresh-token", refreshToken, { path: "/" });
+
       if (window?.open !== undefined && window?.location !== undefined) {
         const url = window.location.origin + window.location.pathname;
         window.open(url, "_self");
@@ -35,6 +40,21 @@ const useLogin = () => {
   }, [setCookie, setIsLoggingIn]);
 
   useEffect(() => {
+    const obtainNewAccessToken = async () => {
+      try {
+        console.log("Session expired, obtaining refresh token");
+        const {
+          data: { accessToken },
+        } = await axios.post(
+          `https://api.soul-network.com/v1/auth/refresh?platformId=${PLATFORM_ID}`,
+          { refreshToken: cookies["soul-refresh-token"] }
+        );
+        setCookie("soul-token", accessToken, { path: "/" });
+      } catch (_error) {
+        removeCookies("soul-refresh-token");
+      }
+    };
+
     const loginAndSetUsername = async () => {
       setIsLoggingIn(true);
       try {
@@ -51,7 +71,15 @@ const useLogin = () => {
           userId: id,
           token: cookies["soul-token"],
         });
-      } catch (_error) {
+      } catch (error) {
+        if (
+          axios.isAxiosError(error) &&
+          error.response?.status === 401 &&
+          error.response?.data.error === "UNAUTHORIZED_ERROR" &&
+          cookies["soul-refresh-token"]
+        ) {
+          obtainNewAccessToken();
+        }
         removeCookies("soul-token");
       }
       setIsLoggingIn(false);
@@ -61,7 +89,7 @@ const useLogin = () => {
     } else {
       setUserCredentials(undefined);
     }
-  }, [cookies, removeCookies, setIsLoggingIn]);
+  }, [cookies, removeCookies, setCookie, setIsLoggingIn]);
 
   const login = () => {
     if (window?.open !== undefined) {
@@ -73,8 +101,6 @@ const useLogin = () => {
   };
 
   const logout = () => removeCookies("soul-token");
-
-  // TODO: Consider trying for refresh token when we can't login
 
   return { login, logout, loggingIn, ...userCredentials };
 };

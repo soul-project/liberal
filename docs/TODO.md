@@ -1,5 +1,6 @@
 # Things to do
 
+- Create an npm package/ sdk to utilize soul network auth properly
 - Add a page for user posts to see all user posts paginated
 - Add Meili search to the deployment -> consider spinning up a new instance 🤔
 - Add CSS styling and some javascript into the IPFS webpages
@@ -11,7 +12,6 @@
 - Add IPFS docker to soul-network https://dokku.com/docs~v0.23.9/deployment/methods/images/#deploying-from-a-docker-registry
 - Consider using firebase to store some of the user information for this platform
 - Improve the login experience, store user credentials in the cookies so we don't see the flicker
-  - Use refresh token for logging in again
 
 ## Misc
 
