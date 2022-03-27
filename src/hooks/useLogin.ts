@@ -1,14 +1,26 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+// import { useQuery } from "react-query";
+
+// import { User } from "./useLogin/types";
 
 const PLATFORM_ID = 2;
 const CALLBACK = "http://localhost:3000";
 
 const useLogin = () => {
-  const [cookies, setCookie, removeCookies] = useCookies([
+  const [
+    {
+      "soul-token": soulToken,
+      "soul-refresh-token": soulRefreshToken,
+      "soul-cached-credentials": soulCachedCredentials,
+    },
+    setCookie,
+    removeCookies,
+  ] = useCookies([
     "soul-token",
     "soul-refresh-token",
+    "soul-cached-credentials",
   ]);
   const [userCredentials, setUserCredentials] = useState<{
     username: string;
@@ -17,6 +29,22 @@ const useLogin = () => {
   }>();
   const [loggingIn, setIsLoggingIn] = useState(false);
 
+  // const { data: userData, error: fetchUserError } = useQuery(
+  //   ["soul/user/me"],
+  //   () =>
+  //     axios.get<User>("https://api.soul-network.com/v1/users/me", {
+  //       headers: {
+  //         "Content-type": "application/json",
+  //         Authorization: `Bearer ${soulToken}`,
+  //       },
+  //     }),
+  //   {
+  //     cacheTime: 5 * 1000, // 5 seconds,
+  //     enabled: !!soulToken,
+  //   }
+  // );
+
+  // verify code from callback
   useEffect(() => {
     const login = async (code: string) => {
       setIsLoggingIn(true);
@@ -39,7 +67,10 @@ const useLogin = () => {
     if (params.code) login(params.code);
   }, [setCookie, setIsLoggingIn]);
 
+  // get user credentials
   useEffect(() => {
+    setUserCredentials(soulCachedCredentials);
+
     const obtainNewAccessToken = async () => {
       try {
         console.log("Session expired, obtaining refresh token");
@@ -47,7 +78,7 @@ const useLogin = () => {
           data: { accessToken },
         } = await axios.post(
           `https://api.soul-network.com/v1/auth/refresh?platformId=${PLATFORM_ID}`,
-          { refreshToken: cookies["soul-refresh-token"] }
+          { refreshToken: soulRefreshToken }
         );
         setCookie("soul-token", accessToken, { path: "/" });
       } catch (_error) {
@@ -63,20 +94,22 @@ const useLogin = () => {
         } = await axios.get("https://api.soul-network.com/v1/users/me", {
           headers: {
             "Content-type": "application/json",
-            Authorization: `Bearer ${cookies["soul-token"]}`,
+            Authorization: `Bearer ${soulToken}`,
           },
         });
-        setUserCredentials({
+        const credentials = {
           username,
           userId: id,
-          token: cookies["soul-token"],
-        });
+          token: soulToken,
+        };
+        setUserCredentials(credentials);
+        setCookie("soul-cached-credentials", credentials, { path: "/" });
       } catch (error) {
         if (
           axios.isAxiosError(error) &&
           error.response?.status === 401 &&
           error.response?.data.error === "UNAUTHORIZED_ERROR" &&
-          cookies["soul-refresh-token"]
+          soulRefreshToken
         ) {
           obtainNewAccessToken();
         }
@@ -84,12 +117,12 @@ const useLogin = () => {
       }
       setIsLoggingIn(false);
     };
-    if (cookies["soul-token"]) {
+    if (soulToken) {
       loginAndSetUsername();
     } else {
       setUserCredentials(undefined);
     }
-  }, [cookies, removeCookies, setCookie, setIsLoggingIn]);
+  }, [soulToken, removeCookies, setCookie, setIsLoggingIn, soulRefreshToken]);
 
   const login = () => {
     if (window?.open !== undefined) {
