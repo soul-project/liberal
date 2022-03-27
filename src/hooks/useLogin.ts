@@ -122,7 +122,11 @@ const useLogin = ({ platformId, callback }: Args) => {
     }
   };
 
-  const logout = () => removeCookies("soul-token");
+  const logout = () => {
+    removeCookies("soul-cached-credentials");
+    removeCookies("soul-refresh-token")
+    removeCookies("soul-token");
+  };
 
   return { login, logout, loggingIn, ...userCredentials };
 };
