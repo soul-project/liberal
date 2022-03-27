@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
-// import { useQuery } from "react-query";
-
-// import { User } from "./useLogin/types";
 
 const PLATFORM_ID = 2;
 const CALLBACK = "http://localhost:3000";
@@ -28,21 +25,6 @@ const useLogin = () => {
     token: string;
   }>();
   const [loggingIn, setIsLoggingIn] = useState(false);
-
-  // const { data: userData, error: fetchUserError } = useQuery(
-  //   ["soul/user/me"],
-  //   () =>
-  //     axios.get<User>("https://api.soul-network.com/v1/users/me", {
-  //       headers: {
-  //         "Content-type": "application/json",
-  //         Authorization: `Bearer ${soulToken}`,
-  //       },
-  //     }),
-  //   {
-  //     cacheTime: 5 * 1000, // 5 seconds,
-  //     enabled: !!soulToken,
-  //   }
-  // );
 
   // verify code from callback
   useEffect(() => {
@@ -69,8 +51,6 @@ const useLogin = () => {
 
   // get user credentials
   useEffect(() => {
-    setUserCredentials(soulCachedCredentials);
-
     const obtainNewAccessToken = async () => {
       try {
         console.log("Session expired, obtaining refresh token");
@@ -117,12 +97,17 @@ const useLogin = () => {
       }
       setIsLoggingIn(false);
     };
+
     if (soulToken) {
       loginAndSetUsername();
     } else {
-      setUserCredentials(undefined);
+      removeCookies("soul-cached-credentials");
     }
   }, [soulToken, removeCookies, setCookie, setIsLoggingIn, soulRefreshToken]);
+
+  useEffect(() => {
+    setUserCredentials(soulCachedCredentials);
+  }, [soulCachedCredentials]);
 
   const login = () => {
     if (window?.open !== undefined) {
@@ -138,6 +123,8 @@ const useLogin = () => {
   return { login, logout, loggingIn, ...userCredentials };
 };
 
+export default useLogin;
+
 const getSearchParams = <T extends object>(): Partial<T> => {
   // server side rendering
   if (typeof window === "undefined") {
@@ -152,5 +139,3 @@ const getSearchParams = <T extends object>(): Partial<T> => {
     },
   }) as T;
 };
-
-export default useLogin;
