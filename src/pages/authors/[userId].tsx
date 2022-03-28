@@ -1,26 +1,26 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { Box, Button, Text, Pagination } from "@mantine/core";
 import { useLogin } from "@soul-project/react-soul-utils";
 import { File } from "tabler-icons-react";
+import { useQuery } from "react-query";
 
 import NavigationBar from "src/components/NavigationBar";
 import Footer from "src/components/Footer";
 import Page from "src/components/Page";
-import { useQuery } from "react-query";
 
 const Author: NextPage = () => {
   const router = useRouter();
-  const { userId } = router.query;
+  const { userId, page, numItemsPerPage } = router.query;
+  console.log(page, numItemsPerPage);
 
   const { userCredentials, login, logout, isLoggingIn } = useLogin({
     platformId: 2,
     callback: "http://localhost:3000",
   });
-  const [page, setPage] = useState(1);
+  // const [page, setPage] = useState(1);
 
   const { data } = useQuery(
     [`/api/authors/posts`, userId],
@@ -29,7 +29,6 @@ const Author: NextPage = () => {
         `/api/authors/${userId}/posts`,
         { params: { page: 1 } }
       );
-
       return data;
     },
     { enabled: !!userId }

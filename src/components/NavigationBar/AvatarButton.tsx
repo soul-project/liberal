@@ -31,7 +31,7 @@ const AvatarButton = ({ onClick, username }: Props) => {
 
 export default AvatarButton;
 
-type Props = {
+export type Props = {
   onClick: () => void;
   username: string;
 };

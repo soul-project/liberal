@@ -1,6 +1,8 @@
 # Things to do
 
+- disable SSR for some components using the `<ClientOnly />` wrapper
 - Add a page for user posts to see all user posts paginated
+- Maybe expose some login functions for soul-utils so that it can be used in `getServerSideProps`
 - Add Meili search to the deployment -> consider spinning up a new instance 🤔
 - Add CSS styling and some javascript into the IPFS webpages
 - Adjust the font size accordingly and change the font style
@@ -18,3 +20,5 @@
 - Add syntax highlighting to RichTextEditor
 - Consider adding an email notification for when the article is available
 - add tests for the react-soul-utils package
+- Consider adopting this pattern for authentication https://nextjs.org/docs/authentication#authenticating-server-rendered-pages
+  - We need to expose some of the methods used for authenticating here
