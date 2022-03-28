@@ -1,6 +1,5 @@
 # Things to do
 
-- check this out https://nextjs.org/docs/advanced-features/module-path-aliases
 - Add a page for user posts to see all user posts paginated
 - Add Meili search to the deployment -> consider spinning up a new instance 🤔
 - Add CSS styling and some javascript into the IPFS webpages

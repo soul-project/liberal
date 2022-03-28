@@ -3,13 +3,14 @@ import { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { Box, Button, Text } from "@mantine/core";
+import { Box, Button, Text, Pagination } from "@mantine/core";
 import { useLogin } from "@soul-project/react-soul-utils";
 import { File } from "tabler-icons-react";
 
 import NavigationBar from "src/components/NavigationBar";
 import Footer from "src/components/Footer";
 import Page from "src/components/Page";
+import { useQuery } from "react-query";
 
 const Author: NextPage = () => {
   const router = useRouter();
@@ -19,20 +20,22 @@ const Author: NextPage = () => {
     platformId: 2,
     callback: "http://localhost:3000",
   });
-  const [username, setUsername] = useState<string | undefined>();
+  const [page, setPage] = useState(1);
 
-  useEffect(() => {
-    const getUsername = async (userId: string) => {
-      const {
-        data: { username },
-      } = await axios.get(`/api/authors/${userId}`);
-      setUsername(username);
-    };
-    if (userId) {
-      getUsername(userId as string);
-    }
-  }, [userId]);
-  // TODO: Get posts of this user, create endpoint on nextjs to do that
+  const { data } = useQuery(
+    [`/api/authors/posts`, userId],
+    async () => {
+      const { data } = await axios.get<{ posts: Post[]; totalCount: number }>(
+        `/api/authors/${userId}/posts`,
+        { params: { page: 1 } }
+      );
+
+      return data;
+    },
+    { enabled: !!userId }
+  );
+
+  console.log(data);
 
   return (
     <div>
@@ -70,8 +73,10 @@ const Author: NextPage = () => {
                 fontSize: "30px",
               })}
             >
-              {username}
+              {userCredentials?.username}
             </Text>
+            {/* TODO: Display posts with paginator */}
+            <Pagination total={10} />
           </Box>
         </Page>
       </main>
@@ -81,3 +86,8 @@ const Author: NextPage = () => {
 };
 
 export default Author;
+
+type Post = {
+  cid: string;
+  title: string;
+};
