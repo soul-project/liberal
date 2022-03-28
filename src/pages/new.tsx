@@ -24,8 +24,6 @@ const New: NextPage = () => {
     callback: "http://localhost:3000",
   });
 
-  // TODO: If user is not logged in, redirect
-
   const {
     Editor,
     publish,

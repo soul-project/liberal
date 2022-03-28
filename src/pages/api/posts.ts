@@ -7,8 +7,8 @@ import { getUserCredentialsFromToken } from "@soul-project/react-soul-utils";
 
 import { HTMLTemplate } from "./posts/template";
 
-import Logger from "../../utils/logger";
-import db from "../../firebase/firestoreClient";
+import Logger from "src/utils/logger";
+import db from "src/firebase/firestoreClient";
 
 const logger = Logger("api/posts");
 

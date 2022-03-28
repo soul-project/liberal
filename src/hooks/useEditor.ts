@@ -2,7 +2,6 @@ import axios from "axios";
 import dynamic from "next/dynamic";
 import { ComponentType, useState } from "react";
 import { useMutation } from "react-query";
-import { useLogin } from "@soul-project/react-soul-utils";
 
 import { Props } from "../components/Editor/RichTextEditor";
 import TitleInput from "../components/Editor/TitleInput";

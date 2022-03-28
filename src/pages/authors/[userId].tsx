@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
@@ -6,10 +7,9 @@ import { Box, Button, Text } from "@mantine/core";
 import { useLogin } from "@soul-project/react-soul-utils";
 import { File } from "tabler-icons-react";
 
-import NavigationBar from "../../components/NavigationBar";
-import Footer from "../../components/Footer";
-import Page from "../../components/Page";
-import axios from "axios";
+import NavigationBar from "src/components/NavigationBar";
+import Footer from "src/components/Footer";
+import Page from "src/components/Page";
 
 const Author: NextPage = () => {
   const router = useRouter();
