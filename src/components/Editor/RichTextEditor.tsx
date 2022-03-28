@@ -23,7 +23,7 @@ const RichTextEditor = ({ onChange, value }: Props) => {
       modules={modules}
       controls={[
         ["bold", "italic", "underline", "link"],
-        ["unorderedList", "h1", "h2", "h3"],
+        ["unorderedList", "orderedList", "blockquote", "h1", "h2", "h3"],
         ["code", "codeBlock"],
       ]}
     />

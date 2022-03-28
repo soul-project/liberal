@@ -22,16 +22,17 @@ const Author: NextPage = () => {
   const [username, setUsername] = useState<string | undefined>();
 
   useEffect(() => {
-    const getUsername = async () => {
+    const getUsername = async (userId: string) => {
       const {
         data: { username },
       } = await axios.get(`/api/authors/${userId}`);
       setUsername(username);
     };
     if (userId) {
-      getUsername();
+      getUsername(userId as string);
     }
   }, [userId]);
+  // TODO: Get posts of this user, create endpoint on nextjs to do that
 
   return (
     <div>

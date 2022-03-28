@@ -1,5 +1,6 @@
 # Things to do
 
+- rename all the pages to capital letters
 - Add a page for user posts to see all user posts paginated
 - Add Meili search to the deployment -> consider spinning up a new instance 🤔
 - Add CSS styling and some javascript into the IPFS webpages

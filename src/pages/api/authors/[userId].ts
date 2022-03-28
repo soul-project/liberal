@@ -3,13 +3,12 @@ import { getUserFromId } from "@soul-project/react-soul-utils";
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<{ username: string }>
+  res: NextApiResponse<{ username: string; userId: number; userHandle: string }>
 ) => {
   if (req.method === "GET") {
     const { userId } = req.query;
-    console.log(userId);
-    const { username } = await getUserFromId(parseInt(userId as string, 10));
-    res.status(200).json({ username });
+    const data = await getUserFromId(parseInt(userId as string, 10));
+    res.status(200).json(data);
   }
   res.status(404).end();
 };
