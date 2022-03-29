@@ -1,6 +1,6 @@
 # Things to do
 
-- disable SSR for some components using the `<ClientOnly />` wrapper
+- Create a short description based on the first line of what's written in the article
 - Add a page for user posts to see all user posts paginated
 - Maybe expose some login functions for soul-utils so that it can be used in `getServerSideProps`
 - Add Meili search to the deployment -> consider spinning up a new instance 🤔

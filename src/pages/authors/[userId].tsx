@@ -2,7 +2,7 @@ import axios from "axios";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { Box, Button, Text, Pagination } from "@mantine/core";
+import { Box, Button, Text, Pagination, Divider, Stack } from "@mantine/core";
 import { useLogin } from "@soul-project/react-soul-utils";
 import { File } from "tabler-icons-react";
 import { useQuery } from "react-query";
@@ -10,31 +10,33 @@ import { useQuery } from "react-query";
 import NavigationBar from "src/components/NavigationBar";
 import Footer from "src/components/Footer";
 import Page from "src/components/Page";
+import usePagination from "src/hooks/usePagination";
 
 const Author: NextPage = () => {
   const router = useRouter();
-  const { userId, page, numItemsPerPage } = router.query;
-  console.log(page, numItemsPerPage);
-
-  const { userCredentials, login, logout, isLoggingIn } = useLogin({
-    platformId: 2,
-    callback: "http://localhost:3000",
-  });
-  // const [page, setPage] = useState(1);
+  const { userId } = router.query;
 
   const { data } = useQuery(
     [`/api/authors/posts`, userId],
     async () => {
       const { data } = await axios.get<{ posts: Post[]; totalCount: number }>(
         `/api/authors/${userId}/posts`,
-        { params: { page: 1 } }
+        { params: { page: 1, numItemsPerPage: 10 } }
       );
       return data;
     },
     { enabled: !!userId }
   );
 
-  console.log(data);
+  const { userCredentials, login, logout, isLoggingIn } = useLogin({
+    platformId: 2,
+    callback: "http://localhost:3000",
+  });
+
+  const { page, setPage, totalPages } = usePagination(
+    data?.totalCount || 0,
+    router
+  );
 
   return (
     <div>
@@ -74,8 +76,24 @@ const Author: NextPage = () => {
             >
               {userCredentials?.username}
             </Text>
-            {/* TODO: Display posts with paginator */}
-            <Pagination total={10} />
+            <Divider my="sm" />
+            {data && (
+              <Box>
+                <Stack>
+                  {data.posts.map((post) => (
+                    <Box key={post.cid}>
+                      <Text color="white">{post.title}</Text>
+                    </Box>
+                  ))}
+                </Stack>
+                <Pagination
+                  total={totalPages}
+                  page={page}
+                  onChange={setPage}
+                  sx={() => ({ marginTop: "30px" })}
+                />
+              </Box>
+            )}
           </Box>
         </Page>
       </main>
