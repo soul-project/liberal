@@ -2,7 +2,15 @@ import axios from "axios";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { Box, Button, Text, Pagination, Divider, Stack } from "@mantine/core";
+import {
+  Box,
+  Button,
+  Text,
+  Pagination,
+  Divider,
+  Stack,
+  Loader,
+} from "@mantine/core";
 import { useLogin } from "@soul-project/react-soul-utils";
 import { File } from "tabler-icons-react";
 import { useQuery } from "react-query";
@@ -22,6 +30,17 @@ const Author: NextPage = () => {
       const { data } = await axios.get<{ posts: Post[]; totalCount: number }>(
         `/api/authors/${userId}/posts`,
         { params: { page: 1, numItemsPerPage: 10 } }
+      );
+      return data;
+    },
+    { enabled: !!userId }
+  );
+
+  const { data: authorData } = useQuery(
+    [`/api/authors/`, userId],
+    async () => {
+      const { data } = await axios.get<{ username: string }>(
+        `/api/authors/${userId}`
       );
       return data;
     },
@@ -65,7 +84,10 @@ const Author: NextPage = () => {
           />
           <Box
             sx={() => ({
-              padding: "10px 30px 30px 30px",
+              maxWidth: "800px",
+              display: "block",
+              marginLeft: "auto",
+              marginRight: "auto",
             })}
           >
             <Text
@@ -74,15 +96,18 @@ const Author: NextPage = () => {
                 fontSize: "30px",
               })}
             >
-              {userCredentials?.username}
+              {authorData?.username}
             </Text>
             <Divider my="sm" />
-            {data && (
+            {data ? (
               <Box>
                 <Stack>
                   {data.posts.map((post) => (
-                    <Box key={post.cid}>
-                      <Text color="white">{post.title}</Text>
+                    <Box key={post.cid} component="a" href="/">
+                      <Text color="white" weight="bold">
+                        {post.title}
+                      </Text>
+                      <Text color="white">This is a cool description</Text>
                     </Box>
                   ))}
                 </Stack>
@@ -93,6 +118,8 @@ const Author: NextPage = () => {
                   sx={() => ({ marginTop: "30px" })}
                 />
               </Box>
+            ) : (
+              <Loader />
             )}
           </Box>
         </Page>
